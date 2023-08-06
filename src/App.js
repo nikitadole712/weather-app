@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import '../src/App.css';
-import wea from '../src/assets/wea.jpg';
-import { UilCloudSun,UilLocationPoint } from '@iconscout/react-unicons'
-
+import image from '../src/assets/image.svg';
 
 const App = () => {
   const apiKey = '2c83063d5044f6182361fbe6323d77e9';
@@ -21,44 +19,63 @@ const App = () => {
   };
   return (
     <div
-      className="app"
-      style={{ backgroundImage: `url(${wea})` }}
+      className="app text-center"
+      style={{ backgroundImage: `url(${image})` }}
     >
-      <div className="container">
+      <div className="d-flex justify-content-center">
         <input
-          className="input"
+          className="form-control m-5 f-s w-25 shadow"
           placeholder="Enter City..."
           onChange={(e) => setCity(e.target.value)}
           value={city}
           onKeyPress={getWeather}
         />
-        <UilLocationPoint size={25} 
-        className="location"/>
-
-        {typeof weatherData.main === 'undefined' ? (
-          <div>
-            <p>
-              Welcome to Weather App!Enter a city to get weather of.
-            </p>
-          </div>
-              ) : (
-          <div className="weather-data">
-            <p className="city">{weatherData.name}</p>
-            <UilCloudSun className="icon"/>
-            <p className="temp">
-              {Math.round(weatherData.main.temp)}°C
-            </p>
-            <p className="weather">{weatherData.weather[0].main}</p>
-            <table>
-              <tr>
-                <td>Min/Max<p>{Math.round(weatherData.main.temp_min)}°C/{Math.round(weatherData.main.temp_max)}°C</p></td>
-                <td>feels like<p>{Math.round(weatherData.main.feels_like)}°C</p></td>
-                <td>Humidity<p>{Math.round(weatherData.main.humidity)}</p></td>
-              </tr>
-            </table>
-          </div>
-        )}
       </div>
+      {typeof weatherData.main !== 'undefined' && (
+        <div
+          className="card rounded mx-auto w-50 h-50 shadow bg-opacity-10"
+          style={{ backgroundColor: 'rgba(250, 250, 250, 0.1)' }}
+        >
+          <div className="card-body">
+            <div>
+              <img
+                src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                class="img-fluid"
+                alt="..."
+              />
+              <h5 className="card-title">
+                {weatherData.weather[0].main}
+              </h5>
+            </div>
+            <div>
+              {weatherData.name}, {weatherData.sys.country}
+            </div>
+            <div className="mt-4">
+              <h1>{Math.round(weatherData.main.temp)}°C</h1>
+            </div>
+
+            <div className="d-flex justify-content-around">
+              <div className="p-2">
+                <h6>Min/Max</h6>
+                <div>
+                  {Math.round(weatherData.main.temp_min)}°C/
+                  {Math.round(weatherData.main.temp_max)}°C
+                </div>
+              </div>
+
+              <div className="p-2">
+                <h6>Pressure</h6>
+                <div>{Math.round(weatherData.main.pressure)}</div>
+              </div>
+
+              <div className="p-2">
+                <h6>Humidity</h6>
+                <div>{Math.round(weatherData.main.humidity)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
